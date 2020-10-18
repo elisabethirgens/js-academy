@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Character count</title>
+    <style type="text/css">
+      body {
+        margin: 2rem auto;
+        padding: 1rem;
+        max-width: 40rem;
+      }
+      label {
+        display: block;
+      }
+      textarea {
+        min-height: 20rem;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Character count</h1>
+    <label for="text">Type something</label>
+    <textarea id="text"></textarea>
+    <p>
+      You have written
+      <strong><span id="character-count">0</span> characters</strong>.
+    </p>
+    <script>
+      const typing = document.querySelector("#text");
+      const result = document.querySelector("#character-count");
+      function counter() {
+        result.textContent = typing.value.length;
+      }
+      typing.addEventListener("input", counter);
+    </script>
+  </body>
+</html>
