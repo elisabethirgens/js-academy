@@ -23,13 +23,19 @@
     <textarea id="text"></textarea>
     <p>
       You have written
+      <strong><span id="word-count">0</span> words</strong> and
       <strong><span id="character-count">0</span> characters</strong>.
     </p>
     <script>
       const typing = document.querySelector("#text");
-      const result = document.querySelector("#character-count");
+      const resultChar = document.querySelector("#character-count");
+      const resultWord = document.querySelector("#word-count");
       function counter() {
-        result.textContent = typing.value.length;
+        resultChar.textContent = typing.value.length;
+        const wordArray = typing.value.split(" ").filter(function (item) {
+          return item.length;
+        });
+        resultWord.textContent = wordArray.length;
       }
       typing.addEventListener("input", counter);
     </script>
