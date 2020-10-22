@@ -33,9 +33,11 @@
       const resultWord = document.querySelector("#word-count");
       function counter() {
         resultChar.textContent = typing.value.length;
-        const wordArray = typing.value.split(" ").filter(function (item) {
-          return item.length;
-        });
+        const wordArray = typing.value
+          .split(/[\n\r\s]+/g) // regex spaces and line breaks, one or more, global
+          .filter(function (word) {
+            return word.length;
+          });
         resultWord.textContent = wordArray.length;
       }
       typing.addEventListener("input", counter);
