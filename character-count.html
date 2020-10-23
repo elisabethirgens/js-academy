@@ -22,23 +22,24 @@
     <h1>Character count</h1>
     <label for="text">Type something</label>
     <textarea id="text"></textarea>
-    <p>
-      You have written
-      <strong><span id="word-count">0</span> words</strong> and
-      <strong><span id="character-count">0</span> characters</strong>.
+    <p id="result" aria-live="polite">
+      You have written 0 words and 0 characters.
     </p>
     <script>
       const typing = document.querySelector("#text");
-      const resultChar = document.querySelector("#character-count");
-      const resultWord = document.querySelector("#word-count");
+      const result = document.querySelector("#result");
       function counter() {
-        resultChar.textContent = typing.value.length;
-        const wordArray = typing.value
+        const wordsArray = typing.value
           .split(/[\n\r\s]+/g) // regex spaces and line breaks, one or more, global
           .filter(function (word) {
             return word.length;
           });
-        resultWord.textContent = wordArray.length;
+        result.textContent =
+          "You have written " +
+          wordsArray.length +
+          " words and " +
+          typing.value.length +
+          " characters.";
       }
       typing.addEventListener("input", counter);
     </script>
