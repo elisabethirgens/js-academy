@@ -45,7 +45,7 @@
             }
           })
           .then(function (data) {
-            quoteElem.textContent = data;
+            quoteElem.textContent = data[0];
           })
           .catch(function (error) {
             quoteElem.textContent = "Ron has nothing to say right now";
