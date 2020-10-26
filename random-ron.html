@@ -35,6 +35,9 @@
     <script>
       const quoteElem = document.querySelector("#quote");
       const moreBtn = document.querySelector("#more");
+      const recentQuotes = [];
+      const recentQuotesLimit = 50;
+
       function grabQuotes() {
         fetch("https://ron-swanson-quotes.herokuapp.com/v2/quotes")
           .then(function (response) {
@@ -45,12 +48,23 @@
             }
           })
           .then(function (data) {
-            quoteElem.textContent = data[0];
+            var currentQuote = data[0];
+            // check that this quote is not a duplicate
+            if (recentQuotes.indexOf(currentQuote) < 0) {
+              recentQuotes.push(currentQuote);
+              if (recentQuotes.length > recentQuotesLimit) {
+                recentQuotes.shift();
+              }
+              quoteElem.textContent = currentQuote;
+            } else {
+              grabQuotes();
+            }
           })
           .catch(function (error) {
             quoteElem.textContent = "Ron has nothing to say right now";
           });
       }
+
       grabQuotes();
       moreBtn.addEventListener("click", grabQuotes);
     </script>
