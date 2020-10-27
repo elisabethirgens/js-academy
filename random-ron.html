@@ -49,15 +49,15 @@
           })
           .then(function (data) {
             var currentQuote = data[0];
-            // check that this quote is not a duplicate
-            if (recentQuotes.indexOf(currentQuote) < 0) {
-              recentQuotes.push(currentQuote);
-              if (recentQuotes.length > recentQuotesLimit) {
-                recentQuotes.shift();
-              }
-              quoteElem.textContent = currentQuote;
-            } else {
+            // check if this quote is a duplicate
+            if (recentQuotes.indexOf(currentQuote) > -1) {
               grabQuotes();
+              return;
+            }
+            quoteElem.textContent = currentQuote;
+            recentQuotes.push(currentQuote);
+            if (recentQuotes.length > recentQuotesLimit) {
+              recentQuotes.shift();
             }
           })
           .catch(function (error) {
