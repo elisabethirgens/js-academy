@@ -7,3 +7,4 @@ This repo is my code and also notes (in commit messages!) from attending [vanill
 - Toggle password visibility
 - Word and character count
 - Random Ron quotes with API calls
+- Top Stories from NYT API

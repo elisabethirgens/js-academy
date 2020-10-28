@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Top Stores API</title>
+    <style type="text/css">
+      body {
+        margin: 0 auto;
+        max-width: 38rem;
+        padding: 1rem;
+      }
+      .article h2 {
+        font-size: 1.25rem;
+        margin: 0;
+      }
+      .article p {
+        margin: 0 0 2rem 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>New York Times: food 🍳😋</h1>
+    <div id="app"></div>
+    <script>
+      const app = document.querySelector("#app");
+      const endpoint = "https://api.nytimes.com/svc/topstories/v2/food.json";
+      const key = "";
+
+      function getTopStories() {
+        fetch(endpoint + "?api-key=" + key)
+          .then(function (response) {
+            if (response.ok) {
+              return response.json();
+            } else {
+              return Promise.reject(response);
+            }
+          })
+          .then(function (data) {
+            createMarkup(data.results);
+          })
+          .catch(function () {
+            app.textContent = "something went wrong";
+          });
+      }
+
+      function createMarkup(articles) {
+        app.innerHTML = articles
+          .map(function (article) {
+            return (
+              '<div class="article">' +
+              "<h2>" +
+              article.title +
+              "</h2>" +
+              "<p>" +
+              article.abstract +
+              "</p>" +
+              "</div>"
+            );
+          })
+          .join("");
+      }
+
+      getTopStories();
+    </script>
+  </body>
+</html>
