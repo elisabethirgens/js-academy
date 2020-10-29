@@ -46,16 +46,13 @@
       function createMarkup(articles) {
         app.innerHTML = articles
           .map(function (article) {
-            return (
-              '<div class="article">' +
-              "<h2>" +
-              article.title +
-              "</h2>" +
-              "<p>" +
-              article.abstract +
-              "</p>" +
-              "</div>"
-            );
+            const html = `
+              <div class="article">
+                <h2>${article.title}</h2>
+                <p>${article.abstract}</p>
+              </div>
+            `;
+            return html;
           })
           .join("");
       }
