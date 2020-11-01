@@ -9,7 +9,16 @@
         max-width: 38rem;
         padding: 1rem;
       }
-      .article h2 {
+      .section-heading {
+        background-color: #eee;
+        padding: 0.5rem 4rem 0.25rem 4rem;
+        margin: 1rem -4rem;
+        font-size: 0.75rem;
+        font-family: sans-serif;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+      }
+      .article h3 {
         font-size: 1.25rem;
         margin: 0;
       }
@@ -19,40 +28,52 @@
     </style>
   </head>
   <body>
-    <h1>New York Times: food 🍳😋</h1>
+    <h1>New York Times</h1>
     <div id="app"></div>
     <script>
       const app = document.querySelector("#app");
-      const endpoint = "https://api.nytimes.com/svc/topstories/v2/food.json";
+      const endpoint = "https://api.nytimes.com/svc/topstories/v2/";
       const key = "";
+      const sections = ["arts", "food", "travel"];
+      const fetchCalls = [];
 
       function getTopStories() {
-        fetch(endpoint + "?api-key=" + key)
-          .then(function (response) {
-            if (response.ok) {
-              return response.json();
-            } else {
-              return Promise.reject(response);
-            }
+        sections.forEach(function (section) {
+          fetchCalls.push(fetch(endpoint + section + ".json?api-key=" + key));
+        });
+        Promise.all(fetchCalls)
+          .then(function (responses) {
+            return Promise.all(
+              responses.map(function (response) {
+                return response.json();
+              })
+            );
           })
           .then(function (data) {
-            createMarkup(data.results);
+            createMarkup(data);
           })
           .catch(function () {
             app.textContent = "something went wrong";
           });
       }
 
-      function createMarkup(articles) {
-        app.innerHTML = articles
-          .map(function (article) {
-            const html = `
-              <div class="article">
-                <h2>${article.title}</h2>
-                <p>${article.abstract}</p>
-              </div>
-            `;
-            return html;
+      function createMarkup(allSections) {
+        app.innerHTML = allSections
+          .map(function (oneSection) {
+            const sectionName = `
+              <h2 class="section-heading">${oneSection.section}</h2>`;
+            const articleList = oneSection.results
+              .splice(0, 3)
+              .map(function (article) {
+                const articleIntro = `
+                  <div class="article">
+                    <h3>${article.title}</h3>
+                    <p>${article.abstract}</p>
+                  </div>`;
+                return articleIntro;
+              })
+              .join("");
+            return sectionName + articleList;
           })
           .join("");
       }
