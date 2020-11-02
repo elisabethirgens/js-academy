@@ -58,18 +58,27 @@
           });
       }
 
+      // Sanitize third-party content by encoding to string
+      const sanitizeHTML = function (str) {
+        return str.replace(/[^\w. ]/gi, function (c) {
+          return "&#" + c.charCodeAt(0) + ";";
+        });
+      };
+
       function createMarkup(allSections) {
         app.innerHTML = allSections
           .map(function (oneSection) {
             const sectionName = `
-              <h2 class="section-heading">${oneSection.section}</h2>`;
+              <h2 class="section-heading">
+                ${sanitizeHTML(oneSection.section)}
+              </h2>`;
             const articleList = oneSection.results
               .splice(0, topStoriesNumber)
               .map(function (article) {
                 const articleIntro = `
                   <div class="article">
-                    <h3>${article.title}</h3>
-                    <p>${article.abstract}</p>
+                    <h3>${sanitizeHTML(article.title)}</h3>
+                    <p>${sanitizeHTML(article.abstract)}</p>
                   </div>`;
                 return articleIntro;
               })
