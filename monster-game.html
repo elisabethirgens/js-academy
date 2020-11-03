@@ -1,0 +1,73 @@
+<!DOCTYPE >
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Monsters</title>
+    <style>
+      body {
+        margin: 2rem auto;
+        padding: 1rem;
+        max-width: 40rem;
+      }
+      .row {
+        display: grid;
+        grid-template-columns: auto auto auto;
+        text-align: center;
+      }
+      .grid {
+        min-height: 6rem;
+        padding: 1rem;
+      }
+      img {
+        height: auto;
+        max-width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Monsters</h1>
+    <div id="app"></div>
+    <script>
+      const app = document.querySelector("#app");
+      // prettier-ignore
+      const monsters = [
+        "monster1", "monster2", "monster3", "monster4", "monster5", "monster6", 
+        "monster7", "monster8", "monster9", "monster10", "monster11", "sock",
+      ];
+
+      function generateMonsters() {
+        app.innerHTML =
+          `<div class="row">` +
+          shuffle(monsters)
+            .slice(0, 6)
+            .map(function (item) {
+              const card = `
+                <div class="grid">
+                  <img src="" alt=${item}>
+                </div>
+              `;
+              return card;
+            })
+            .join("") +
+          `</div>`;
+      }
+
+      // Fisher–Yates Shuffle https://bost.ocks.org/mike/shuffle/
+      function shuffle(array) {
+        var remaining = array.length,
+          temp,
+          random;
+        while (remaining) {
+          random = Math.floor(Math.random() * remaining);
+          remaining -= 1;
+          temp = array[remaining];
+          array[remaining] = array[random];
+          array[random] = temp;
+        }
+        return array;
+      }
+
+      generateMonsters();
+    </script>
+  </body>
+</html>
