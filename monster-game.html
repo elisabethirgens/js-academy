@@ -35,6 +35,21 @@
         "monster7", "monster8", "monster9", "monster10", "monster11", "sock",
       ];
 
+      // Fisher–Yates Shuffle https://bost.ocks.org/mike/shuffle/
+      function shuffle(array) {
+        var remaining = array.length,
+          temp,
+          random;
+        while (remaining) {
+          random = Math.floor(Math.random() * remaining);
+          remaining -= 1;
+          temp = array[remaining];
+          array[remaining] = array[random];
+          array[random] = temp;
+        }
+        return array;
+      }
+
       function generateMonsters() {
         app.innerHTML =
           `<div class="row">` +
@@ -49,21 +64,6 @@
             })
             .join("") +
           `</div>`;
-      }
-
-      // Fisher–Yates Shuffle https://bost.ocks.org/mike/shuffle/
-      function shuffle(array) {
-        var remaining = array.length,
-          temp,
-          random;
-        while (remaining) {
-          random = Math.floor(Math.random() * remaining);
-          remaining -= 1;
-          temp = array[remaining];
-          array[remaining] = array[random];
-          array[random] = temp;
-        }
-        return array;
       }
 
       generateMonsters();
