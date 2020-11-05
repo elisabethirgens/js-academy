@@ -50,15 +50,15 @@
         return array;
       }
 
-      function generateMonsters() {
+      function generateMonstersBehindDoors() {
         app.innerHTML =
           `<div class="row">` +
           shuffle(monsters)
             .map(function (item) {
               const card = `
-                <div class="grid">
-                  <img src="monsters/${item}.svg" alt=${item}>
-                </div>
+                <button class="grid" type="button" data-toggle="${item}">
+                  <img src="monsters/door.svg" alt="open door">
+                </button>
               `;
               return card;
             })
@@ -66,7 +66,25 @@
           `</div>`;
       }
 
-      generateMonsters();
+      function openDoor(current) {
+        var elem = document.querySelector(
+          '[data-toggle="' + CSS.escape(current) + '"]'
+        );
+        elem.innerHTML = `
+          <img src='monsters/${current}.svg' alt=${current}>
+        `;
+      }
+
+      document.addEventListener("click", function () {
+        if (event.target.closest("[data-toggle]")) {
+          var current = event.target
+            .closest("[data-toggle]")
+            .getAttribute("data-toggle");
+          openDoor(current);
+        }
+      });
+
+      generateMonstersBehindDoors();
     </script>
   </body>
 </html>
