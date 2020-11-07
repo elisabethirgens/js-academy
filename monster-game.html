@@ -56,9 +56,11 @@
           shuffle(monsters)
             .map(function (item) {
               const card = `
-                <button class="grid" type="button" data-toggle="${item}">
-                  <img src="monsters/door.svg" alt="open door">
-                </button>
+                <div class="grid">
+                  <button type="button" data-toggle="${item}">
+                    <img src="monsters/door.svg" alt="open door">
+                  </button>
+                </div>
               `;
               return card;
             })
@@ -70,7 +72,7 @@
         var elem = document.querySelector(
           '[data-toggle="' + CSS.escape(current) + '"]'
         );
-        elem.innerHTML = `
+        elem.parentNode.innerHTML = `
           <img src='monsters/${current}.svg' alt=${current}>
         `;
       }
