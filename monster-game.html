@@ -65,10 +65,10 @@
         app.innerHTML =
           `<div class="row">` +
           monsters
-            .map(function (item) {
+            .map(function (item, index) {
               const card = `
                 <div class="grid">
-                  <button type="button" data-toggle="${item}">
+                  <button type="button" data-toggle="${index}">
                     <img src="monsters/door.svg" alt="open door">
                   </button>
                 </div>
@@ -79,23 +79,16 @@
           `</div>`;
       }
 
-      function openDoor(current) {
-        var elem = document.querySelector(
-          '[data-toggle="' + CSS.escape(current) + '"]'
-        );
-        elem.parentNode.innerHTML = `
-          <img src='monsters/${current}.svg' alt=${current}>
+      function openDoor(event) {
+        const door = event.target.closest("[data-toggle]");
+        if (!door) return;
+        const i = door.getAttribute("data-toggle");
+        door.parentNode.innerHTML = `
+          <img src='monsters/${monsters[i]}.svg' alt=${monsters[i]}>
         `;
       }
 
-      document.addEventListener("click", function () {
-        if (event.target.closest("[data-toggle]")) {
-          var current = event.target
-            .closest("[data-toggle]")
-            .getAttribute("data-toggle");
-          openDoor(current);
-        }
-      });
+      document.addEventListener("click", openDoor);
 
       generateMonstersBehindDoors();
     </script>
