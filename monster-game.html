@@ -59,10 +59,12 @@
         return array;
       }
 
+      shuffle(monsters);
+
       function generateMonstersBehindDoors() {
         app.innerHTML =
           `<div class="row">` +
-          shuffle(monsters)
+          monsters
             .map(function (item) {
               const card = `
                 <div class="grid">
