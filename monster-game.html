@@ -47,7 +47,7 @@
         "monster1", "monster2", "monster3", "monster4", "monster5", "monster6", 
         "monster7", "monster8", "monster9", "monster10", "monster11", "sock",
       ];
-      let counter = 0;
+      let counter;
       const totalNumberOfMonsters = 11;
 
       // Fisher–Yates Shuffle https://bost.ocks.org/mike/shuffle/
@@ -65,9 +65,9 @@
         return array;
       }
 
-      shuffle(monsters);
-
       function generateMonstersBehindDoors() {
+        counter = 0;
+        shuffle(monsters);
         app.innerHTML =
           `<div class="row">` +
           monsters
@@ -111,11 +111,7 @@
       function showPlayAgainButton() {
         app.innerHTML += `<button id="repeat">Play again?</button>`;
         const repeatButton = document.querySelector("#repeat");
-        repeatButton.addEventListener("click", resetGame);
-      }
-
-      function resetGame() {
-        document.location.reload();
+        repeatButton.addEventListener("click", generateMonstersBehindDoors);
       }
 
       document.addEventListener("click", openDoor);
