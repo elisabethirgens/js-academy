@@ -8,6 +8,7 @@
         margin: 2rem auto;
         padding: 1rem;
         max-width: 40rem;
+        text-align: center;
       }
       .row {
         display: grid;
@@ -31,6 +32,9 @@
         height: auto;
         max-width: 100%;
       }
+      .msg {
+        font-size: 2rem;
+      }
     </style>
   </head>
   <body>
@@ -43,6 +47,8 @@
         "monster1", "monster2", "monster3", "monster4", "monster5", "monster6", 
         "monster7", "monster8", "monster9", "monster10", "monster11", "sock",
       ];
+      let counter = 0;
+      const totalNumberOfMonsters = 11;
 
       // Fisher–Yates Shuffle https://bost.ocks.org/mike/shuffle/
       function shuffle(array) {
@@ -86,6 +92,30 @@
         door.parentNode.innerHTML = `
           <img src='monsters/${monsters[i]}.svg' alt=${monsters[i]}>
         `;
+        gameLogic(monsters[i]);
+      }
+
+      function gameLogic(latestDoor) {
+        counter++;
+        if (latestDoor === "sock") {
+          app.innerHTML += `<p class="msg">You lost 😢 </p>`;
+          showPlayAgainButton();
+          return;
+        }
+        if (counter === totalNumberOfMonsters) {
+          app.innerHTML += `<p class="msg">You won! 🎉 </p>`;
+          showPlayAgainButton();
+        }
+      }
+
+      function showPlayAgainButton() {
+        app.innerHTML += `<button id="repeat">Play again?</button>`;
+        const repeatButton = document.querySelector("#repeat");
+        repeatButton.addEventListener("click", resetGame);
+      }
+
+      function resetGame() {
+        document.location.reload();
       }
 
       document.addEventListener("click", openDoor);
