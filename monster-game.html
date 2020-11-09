@@ -25,7 +25,7 @@
         border: 0;
         background: none;
       }
-      button[data-toggle]:hover {
+      button[data-toggle]:enabled:hover {
         background-color: #eee;
       }
       img {
@@ -48,7 +48,7 @@
         "monster7", "monster8", "monster9", "monster10", "monster11", "sock",
       ];
       let counter;
-      const totalNumberOfMonsters = 11;
+      const totalNumberOfMonsters = monsters.length - 1;
 
       // Fisher–Yates Shuffle https://bost.ocks.org/mike/shuffle/
       function shuffle(array) {
@@ -97,7 +97,9 @@
 
       function gameLogic(latestDoor) {
         counter++;
-        if (latestDoor === "sock") {
+        if (latestDoor === "sock" && counter < monsters.length) {
+          const doors = document.querySelectorAll("[data-toggle]");
+          doors.forEach((el) => el.setAttribute("disabled", ""));
           app.innerHTML += `<p class="msg">You lost 😢 </p>`;
           showPlayAgainButton();
           return;
