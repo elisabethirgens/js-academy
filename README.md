@@ -9,3 +9,4 @@ This repo is my code and also notes (in commit messages!) from attending [vanill
 - Random Ron quotes with API calls
 - Top Stories from NYT API
 - Monster Game 👾
+- Table of Contents
