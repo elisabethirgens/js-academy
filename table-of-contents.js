@@ -1,6 +1,5 @@
 const toc = document.querySelector("#table-of-contents");
 let headings = document.querySelectorAll("h2");
-let anchorReplacement = 0;
 
 function renderTable() {
   if (headings.length) {
@@ -8,8 +7,7 @@ function renderTable() {
       .call(headings)
       .map(function (item) {
         if (!item.id) {
-          anchorReplacement++;
-          item.setAttribute("id", anchorReplacement);
+          item.id = item.textContent.replace(/[^a-z0-9]+/gi, "-");
         }
         return `<li><a href="#${item.id}">${item.textContent}</a></li>`;
       })
