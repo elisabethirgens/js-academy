@@ -7,13 +7,11 @@ function renderTable() {
     headings = Array.prototype.slice
       .call(headings)
       .map(function (item) {
-        if (!item.hasAttribute("id")) {
+        if (!item.id) {
           anchorReplacement++;
           item.setAttribute("id", anchorReplacement);
         }
-        const anchor = item.getAttribute("id");
-        const heading = item.textContent;
-        return `<li><a href="#${anchor}">${heading}</a></li>`;
+        return `<li><a href="#${item.id}">${item.textContent}</a></li>`;
       })
       .join("");
     toc.innerHTML = `<ol>${headings}</ol>`;
