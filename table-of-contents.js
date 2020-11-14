@@ -1,7 +1,7 @@
-const toc = document.querySelector("#table-of-contents");
-let headings = document.querySelectorAll("h2");
-
 function renderTable() {
+  const toc = document.querySelector("#table-of-contents");
+  let headings = document.querySelectorAll("h2");
+
   if (headings.length) {
     headings = Array.prototype.slice
       .call(headings)
