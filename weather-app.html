@@ -76,17 +76,24 @@
           });
       }
 
+      // Sanitize third-party content by encoding to string
+      const sanitizeHTML = function (str) {
+        return str.replace(/[^\w. ]/gi, function (c) {
+          return "&#" + c.charCodeAt(0) + ";";
+        });
+      };
+
       function generateMarkup(data) {
         const iconUrl = "https://www.weatherbit.io/static/img/icons/";
         app.innerHTML = `
           <div class="weather">
             <div class="intro">
-              <h2>${data.city_name}</h2>
-              <img src="${iconUrl}${data.weather.icon}.png">
-            </div> 
+              <h2>${sanitizeHTML(data.city_name)}</h2>
+              <img src="${iconUrl}${sanitizeHTML(data.weather.icon)}.png">
+            </div>
             <div class="details">
-              ${data.temp}℃ with
-              ${data.weather.description.toLowerCase()}
+              ${sanitizeHTML(data.temp.toFixed(0))}℃ with
+              ${sanitizeHTML(data.weather.description.toLowerCase())}
             </div>
           </div>`;
       }
