@@ -34,71 +34,83 @@
   </head>
   <body>
     <h1>Weather App</h1>
-    <div id="app">Looking for weather…</div>
+    <div id="weather-plugin">Looking for weather…</div>
 
     <script>
-      const app = document.querySelector("#app");
-      const weatherEndpoint = "http://api.weatherbit.io/v2.0/current?key=";
-      const apiKey = "";
+      function weatherPlugin(options) {
+        var defaults = {
+          selector: "#app",
+        };
 
-      function fetchLocationAndWeather() {
-        fetch("https://ipapi.co/json")
-          .then(function (response) {
-            if (response.ok) {
-              return response.json();
-            } else {
-              return Promise.reject(response);
-            }
-          })
-          .then(function (data) {
-            return fetch(
-              weatherEndpoint +
-                apiKey +
-                "&city=" +
-                data.city +
-                "," +
-                data.country
-            );
-          })
-          .then(function (response) {
-            if (response.ok) {
-              return response.json();
-            } else {
-              return Promise.reject(response);
-            }
-          })
-          .then(function (weatherData) {
-            generateMarkup(weatherData.data[0]);
-          })
-          .catch(function (error) {
-            app.textContent = "Not able to fetch any weather now";
-            console.warn(error);
+        var settings = Object.assign(defaults, options);
+
+        const app = document.querySelector(settings.selector);
+        const weatherEndpoint = "http://api.weatherbit.io/v2.0/current?key=";
+        const apiKey = "";
+
+        function fetchLocationAndWeather() {
+          fetch("https://ipapi.co/json")
+            .then(function (response) {
+              if (response.ok) {
+                return response.json();
+              } else {
+                return Promise.reject(response);
+              }
+            })
+            .then(function (data) {
+              return fetch(
+                weatherEndpoint +
+                  apiKey +
+                  "&city=" +
+                  data.city +
+                  "," +
+                  data.country
+              );
+            })
+            .then(function (response) {
+              if (response.ok) {
+                return response.json();
+              } else {
+                return Promise.reject(response);
+              }
+            })
+            .then(function (weatherData) {
+              generateMarkup(weatherData.data[0]);
+            })
+            .catch(function (error) {
+              app.textContent = "Not able to fetch any weather now";
+              console.warn(error);
+            });
+        }
+
+        // Sanitize third-party content by encoding to string
+        const sanitizeHTML = function (str) {
+          return str.replace(/[^\w. ]/gi, function (c) {
+            return "&#" + c.charCodeAt(0) + ";";
           });
+        };
+
+        function generateMarkup(data) {
+          const iconUrl = "https://www.weatherbit.io/static/img/icons/";
+          app.innerHTML = `
+            <div class="weather">
+              <div class="intro">
+                <h2>${sanitizeHTML(data.city_name)}</h2>
+                <img src="${iconUrl}${sanitizeHTML(data.weather.icon)}.png">
+              </div>
+              <div class="details">
+                ${sanitizeHTML(data.temp.toFixed(0))}℃ with
+                ${sanitizeHTML(data.weather.description.toLowerCase())}
+              </div>
+            </div>`;
+        }
+
+        fetchLocationAndWeather();
       }
 
-      // Sanitize third-party content by encoding to string
-      const sanitizeHTML = function (str) {
-        return str.replace(/[^\w. ]/gi, function (c) {
-          return "&#" + c.charCodeAt(0) + ";";
-        });
-      };
-
-      function generateMarkup(data) {
-        const iconUrl = "https://www.weatherbit.io/static/img/icons/";
-        app.innerHTML = `
-          <div class="weather">
-            <div class="intro">
-              <h2>${sanitizeHTML(data.city_name)}</h2>
-              <img src="${iconUrl}${sanitizeHTML(data.weather.icon)}.png">
-            </div>
-            <div class="details">
-              ${sanitizeHTML(data.temp.toFixed(0))}℃ with
-              ${sanitizeHTML(data.weather.description.toLowerCase())}
-            </div>
-          </div>`;
-      }
-
-      fetchLocationAndWeather();
+      weatherPlugin({
+        selector: "#weather-plugin",
+      });
     </script>
   </body>
 </html>
