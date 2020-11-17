@@ -1,0 +1,97 @@
+<!DOCTYPE >
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Weather App</title>
+    <style>
+      body {
+        margin: 1rem auto;
+        padding: 1rem;
+        max-width: 38rem;
+        background-color: #eee;
+      }
+      h1 {
+        color: #888;
+        font-weight: 400;
+      }
+      h2 {
+        font-size: 4rem;
+        margin: 0;
+      }
+      .weather {
+        border: 4px solid #bbb;
+        background-color: #fff;
+        padding: 1.5rem 2rem;
+      }
+      .intro {
+        display: flex;
+        align-items: center;
+      }
+      .details {
+        font-size: 2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Weather App</h1>
+    <div id="app">Looking for weather…</div>
+
+    <script>
+      const app = document.querySelector("#app");
+      const weatherEndpoint = "http://api.weatherbit.io/v2.0/current?key=";
+      const apiKey = "";
+
+      function fetchLocationAndWeather() {
+        fetch("https://ipapi.co/json")
+          .then(function (response) {
+            if (response.ok) {
+              return response.json();
+            } else {
+              return Promise.reject(response);
+            }
+          })
+          .then(function (data) {
+            return fetch(
+              weatherEndpoint +
+                apiKey +
+                "&city=" +
+                data.city +
+                "," +
+                data.country
+            );
+          })
+          .then(function (response) {
+            if (response.ok) {
+              return response.json();
+            } else {
+              return Promise.reject(response);
+            }
+          })
+          .then(function (weatherData) {
+            generateMarkup(weatherData.data[0]);
+          })
+          .catch(function (error) {
+            app.textContent = "Not able to fetch any weather now";
+            console.warn(error);
+          });
+      }
+
+      function generateMarkup(data) {
+        const iconUrl = "https://www.weatherbit.io/static/img/icons/";
+        app.innerHTML = `
+          <div class="weather">
+            <div class="intro">
+              <h2>${data.city_name}</h2>
+              <img src="${iconUrl}${data.weather.icon}.png">
+            </div> 
+            <div class="details">
+              ${data.temp}℃ with
+              ${data.weather.description.toLowerCase()}
+            </div>
+          </div>`;
+      }
+
+      fetchLocationAndWeather();
+    </script>
+  </body>
+</html>
