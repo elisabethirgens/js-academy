@@ -39,9 +39,9 @@
       function weatherPlugin(options) {
         var defaults = {
           selector: "#app",
-          tempScale: "celsius",
+          convertToFahrenheit: false,
           enableIcon: false,
-          message: "Currently {temp} with {description}",
+          message: "Currently {temperature} with {description}",
         };
 
         var settings = Object.assign(defaults, options);
@@ -92,11 +92,11 @@
           });
         };
 
-        function tempScale(temp) {
-          if (settings.tempScale === "celsius") {
-            return temp.toFixed(0) + "℃";
-          } else {
+        function defineTempScale(temp) {
+          if (settings.convertToFahrenheit) {
             return ((temp * 9) / 5 + 32).toFixed(0) + "℉";
+          } else {
+            return temp.toFixed(0) + "℃";
           }
         }
 
@@ -107,14 +107,17 @@
               "{description}",
               `${sanitizeHTML(data.weather.description.toLowerCase())}`
             )
-            .replace("{temp}", `${sanitizeHTML(tempScale(data.temp))}`);
+            .replace(
+              "{temperature}",
+              `${sanitizeHTML(defineTempScale(data.temp))}`
+            );
 
           app.innerHTML = `
             <div class="weather">
               <div class="intro">
                 <h2>${sanitizeHTML(data.city_name)}</h2>
                 ${
-                  settings.enableIcon === true
+                  settings.enableIcon
                     ? `<img src="
                       ${iconUrl}${sanitizeHTML(data.weather.icon)}.png">`
                     : ` `
@@ -133,7 +136,7 @@
       weatherPlugin({
         selector: "#weather-plugin",
         enableIcon: true,
-        message: "now has {description} and {temp}",
+        message: "now has {description} and {temperature}",
       });
     </script>
   </body>
