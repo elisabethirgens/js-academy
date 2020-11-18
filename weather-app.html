@@ -35,11 +35,11 @@
   <body>
     <h1>Weather App</h1>
     <div id="weather-plugin">Looking for weather…</div>
-
     <script>
       function weatherPlugin(options) {
         var defaults = {
           selector: "#app",
+          tempScale: "celsius",
         };
 
         var settings = Object.assign(defaults, options);
@@ -90,6 +90,14 @@
           });
         };
 
+        function tempScale(temp) {
+          if (settings.tempScale === "celsius") {
+            return temp.toFixed(0) + "℃";
+          } else {
+            return ((temp * 9) / 5 + 32).toFixed(0) + "℉";
+          }
+        }
+
         function generateMarkup(data) {
           const iconUrl = "https://www.weatherbit.io/static/img/icons/";
           app.innerHTML = `
@@ -99,7 +107,7 @@
                 <img src="${iconUrl}${sanitizeHTML(data.weather.icon)}.png">
               </div>
               <div class="details">
-                ${sanitizeHTML(data.temp.toFixed(0))}℃ with
+                ${sanitizeHTML(tempScale(data.temp))} with
                 ${sanitizeHTML(data.weather.description.toLowerCase())}
               </div>
             </div>`;
