@@ -41,6 +41,7 @@
           selector: "#app",
           tempScale: "celsius",
           enableIcon: false,
+          message: "Currently {temp} with {description}",
         };
 
         var settings = Object.assign(defaults, options);
@@ -101,6 +102,13 @@
 
         function generateMarkup(data) {
           const iconUrl = "https://www.weatherbit.io/static/img/icons/";
+          const message = settings.message
+            .replace(
+              "{description}",
+              `${sanitizeHTML(data.weather.description.toLowerCase())}`
+            )
+            .replace("{temp}", `${sanitizeHTML(tempScale(data.temp))}`);
+
           app.innerHTML = `
             <div class="weather">
               <div class="intro">
@@ -113,8 +121,7 @@
                 }
               </div>
               <div class="details">
-                ${sanitizeHTML(tempScale(data.temp))} with
-                ${sanitizeHTML(data.weather.description.toLowerCase())}
+                <div>${message}</div>
               </div>
             </div>
           `;
@@ -126,6 +133,7 @@
       weatherPlugin({
         selector: "#weather-plugin",
         enableIcon: true,
+        message: "now has {description} and {temp}",
       });
     </script>
   </body>
