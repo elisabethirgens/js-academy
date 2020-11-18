@@ -40,6 +40,7 @@
         var defaults = {
           selector: "#app",
           tempScale: "celsius",
+          enableIcon: false,
         };
 
         var settings = Object.assign(defaults, options);
@@ -104,13 +105,19 @@
             <div class="weather">
               <div class="intro">
                 <h2>${sanitizeHTML(data.city_name)}</h2>
-                <img src="${iconUrl}${sanitizeHTML(data.weather.icon)}.png">
+                ${
+                  settings.enableIcon === true
+                    ? `<img src="
+                      ${iconUrl}${sanitizeHTML(data.weather.icon)}.png">`
+                    : ` `
+                }
               </div>
               <div class="details">
                 ${sanitizeHTML(tempScale(data.temp))} with
                 ${sanitizeHTML(data.weather.description.toLowerCase())}
               </div>
-            </div>`;
+            </div>
+          `;
         }
 
         fetchLocationAndWeather();
@@ -118,6 +125,7 @@
 
       weatherPlugin({
         selector: "#weather-plugin",
+        enableIcon: true,
       });
     </script>
   </body>
