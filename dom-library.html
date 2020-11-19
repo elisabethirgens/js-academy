@@ -1,0 +1,69 @@
+<!DOCTYPE >
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>DOM library</title>
+    <style>
+      body {
+        margin: 2rem auto;
+        padding: 1rem;
+        max-width: 40rem;
+      }
+      button {
+        padding: 1rem 3rem;
+        border: none;
+        font-size: 1rem;
+      }
+      .btn-teal {
+        background-color: teal;
+        color: #fff;
+      }
+      .btn-purple {
+        background-color: rebeccapurple;
+        color: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>DOM Library</h1>
+    <p>
+      Everything interesting here happens in the console. <br />
+      Find available methods with <code>lib</code>
+    </p>
+    <div>
+      <button class="btn-teal" id="button-1">Button one</button>
+      <button class="btn-teal" id="button-2">Button two</button>
+      <button class="btn-teal" id="button-3">Button three</button>
+    </div>
+    <script>
+      var lib = (function () {
+        var methods = {};
+
+        methods.convertToArray = function (nodelist) {
+          return Array.prototype.slice.call(nodelist);
+        };
+        methods.getFirst = function (selector) {
+          return document.querySelector(selector);
+        };
+        methods.getAll = function (selector) {
+          var tmp = document.querySelectorAll(selector);
+          return Array.prototype.slice.call(tmp);
+        };
+        methods.addClassToAll = function (selector, newClass) {
+          var tmp = document.querySelectorAll(selector);
+          var array = Array.prototype.slice.call(tmp);
+          array.forEach((el) => el.classList.add(newClass));
+          return array;
+        };
+        methods.removeClassFromAll = function (selector, oldClass) {
+          var tmp = document.querySelectorAll(selector);
+          var array = Array.prototype.slice.call(tmp);
+          array.forEach((el) => el.classList.remove(oldClass));
+          return array;
+        };
+
+        return methods;
+      })();
+    </script>
+  </body>
+</html>
