@@ -58,11 +58,13 @@
           this.items().forEach(function (el) {
             el.classList.add(className);
           });
+          return this;
         };
         Constructor.prototype.removeClass = function (className) {
           this.items().forEach(function (el) {
             el.classList.remove(className);
           });
+          return this;
         };
         return Constructor;
       })();
@@ -75,8 +77,8 @@
       console.log("list.items() 👉 ", list.items());
       console.log("btns.first() ⏪", btns.first());
       console.log("btns.last() ⏩", btns.last());
-      btns.removeClass("btn-teal");
-      btns.addClass("btn-purple");
+      // Look, now we can even chain methods
+      btns.removeClass("btn-teal").addClass("btn-purple");
     </script>
   </body>
 </html>
