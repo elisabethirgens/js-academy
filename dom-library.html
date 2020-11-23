@@ -27,40 +27,56 @@
   <body>
     <h1>DOM Library</h1>
     <p>
-      Everything interesting here happens in the console. <br />
-      Find available methods with <code>lib</code>
+      Most of the interesting stuff here happens in the console. <br />
+      Apart from switching these buttons to purple! 💜
     </p>
     <div>
       <button class="btn-teal" id="button-1">Button one</button>
       <button class="btn-teal" id="button-2">Button two</button>
       <button class="btn-teal" id="button-3">Button three</button>
     </div>
+    <ul>
+      <li>Item one</li>
+      <li>Item two</li>
+      <li>Item three</li>
+    </ul>
     <script>
-      var lib = (function () {
-        var methods = {};
-
-        methods.convertToArray = function (nodelist) {
-          return Array.prototype.slice.call(nodelist);
+      var Lib = (function () {
+        var Constructor = function (selector) {
+          this.elems = document.querySelectorAll(selector);
         };
-        methods.getFirst = function (selector) {
-          return document.querySelector(selector);
+        Constructor.prototype.items = function () {
+          return Array.prototype.slice.call(this.elems);
         };
-        methods.getAll = function (selector) {
-          return methods.convertToArray(document.querySelectorAll(selector));
+        Constructor.prototype.first = function () {
+          return this.elems[0];
         };
-        methods.addClassToAll = function (selector, newClass) {
-          var array = methods.getAll(selector);
-          array.forEach((el) => el.classList.add(newClass));
-          return array;
+        Constructor.prototype.last = function () {
+          return this.elems[this.elems.length - 1];
         };
-        methods.removeClassFromAll = function (selector, oldClass) {
-          var array = methods.getAll(selector);
-          array.forEach((el) => el.classList.remove(oldClass));
-          return array;
+        Constructor.prototype.addClass = function (className) {
+          this.items().forEach(function (el) {
+            el.classList.add(className);
+          });
         };
-
-        return methods;
+        Constructor.prototype.removeClass = function (className) {
+          this.items().forEach(function (el) {
+            el.classList.remove(className);
+          });
+        };
+        return Constructor;
       })();
+
+      // Use the library! First create new instances:
+      var btns = new Lib("button");
+      var list = new Lib("ul");
+      // Do something with the instances
+      console.log("btns.items() 👉 ", btns.items());
+      console.log("list.items() 👉 ", list.items());
+      console.log("btns.first() ⏪", btns.first());
+      console.log("btns.last() ⏩", btns.last());
+      btns.removeClass("btn-teal");
+      btns.addClass("btn-purple");
     </script>
   </body>
 </html>
