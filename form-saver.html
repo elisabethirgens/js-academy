@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Form Saver</title>
+    <style>
+      body {
+        margin: 2rem auto;
+        padding: 1rem;
+        max-width: 30rem;
+      }
+      label {
+        display: block;
+      }
+      input,
+      textarea {
+        display: block;
+        width: 100%;
+        padding: 0.5rem;
+        font-size: 1rem;
+        margin-bottom: 2rem;
+      }
+      textarea {
+        height: 8rem;
+      }
+      button {
+        padding: 1rem 3rem;
+        background: darkseagreen;
+        border: none;
+        font-size: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Form Autosave</h1>
+    <form class="save-me" id="save-me" autocomplete="off">
+      <label for="name">Name</label>
+      <input type="text" name="name" id="name" />
+      <label for="address">Address</label>
+      <input type="text" name="address" id="address" />
+      <label for="email">Email</label>
+      <input type="email" name="email" id="email" />
+      <label for="more">Comment</label>
+      <textarea name="more" id="more"></textarea>
+      <button type="submit">Send form</button>
+    </form>
+    <script>
+      const form = document.querySelector("#save-me");
+      const name = document.querySelector("#name");
+      const address = document.querySelector("#address");
+      const email = document.querySelector("#email");
+      const more = document.querySelector("#more");
+      const btn = document.querySelector("button");
+
+      function saver() {
+        localStorage.setItem("saved-name", name.value);
+        localStorage.setItem("saved-address", address.value);
+        localStorage.setItem("saved-email", email.value);
+        localStorage.setItem("saved-more", more.value);
+      }
+
+      function populateForm() {
+        if (!name.value) {
+          name.value = localStorage.getItem("saved-name");
+        }
+        if (!address.value) {
+          address.value = localStorage.getItem("saved-address");
+        }
+        if (!email.value) {
+          email.value = localStorage.getItem("saved-email");
+        }
+        if (!more.value) {
+          more.value = localStorage.getItem("saved-more");
+        }
+      }
+      populateForm();
+
+      function clearForm() {
+        localStorage.clear();
+      }
+
+      name.addEventListener("input", saver);
+      address.addEventListener("input", saver);
+      email.addEventListener("input", saver);
+      more.addEventListener("input", saver);
+      btn.addEventListener("click", clearForm);
+    </script>
+  </body>
+</html>
