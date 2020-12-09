@@ -45,10 +45,10 @@
       <button type="submit">Send form</button>
     </form>
     <script>
-      const prefix = "saved_";
       const fieldsAll = Array.prototype.slice.call(
         document.querySelectorAll("#save-me input, #save-me textarea")
       );
+      const formData = {};
 
       function getElemId(field) {
         if (field.id) {
@@ -64,14 +64,18 @@
         if (!event.target.closest("#save-me")) return;
         const id = getElemId(event.target);
         if (!id) return;
-        localStorage.setItem(prefix + id, event.target.value);
+        formData[id] = event.target.value;
+        localStorage.setItem("localStoredData", JSON.stringify(formData));
       }
 
       function repopulateForm() {
+        let savedData = localStorage.getItem("localStoredData");
+        if (!savedData) return;
+        savedData = JSON.parse(savedData);
         fieldsAll.forEach(function (field) {
           const id = getElemId(field);
           if (!id) return;
-          const saved = localStorage.getItem(prefix + id);
+          const saved = savedData[id];
           if (!saved) return;
           field.value = saved;
         });
@@ -80,11 +84,7 @@
 
       function clearForm(event) {
         if (event.target.id !== "save-me") return;
-        fieldsAll.forEach(function (field) {
-          const id = getElemId(field);
-          if (!id) return;
-          localStorage.removeItem(prefix + id);
-        });
+        localStorage.removeItem("localStoredData");
       }
 
       document.addEventListener("input", storeData);
