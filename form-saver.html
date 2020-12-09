@@ -45,9 +45,7 @@
       <button type="submit">Send form</button>
     </form>
     <script>
-      const fieldsAll = Array.prototype.slice.call(
-        document.querySelectorAll("#save-me input, #save-me textarea")
-      );
+      const storageID = "form-autosave";
 
       function getElemId(field) {
         if (field.id) {
@@ -63,16 +61,20 @@
         if (!event.target.closest("#save-me")) return;
         const id = getElemId(event.target);
         if (!id) return;
-        let formData = localStorage.getItem("localStoredData");
-        formData = formData ? JSON.parse(formData) : {};
-        formData[id] = event.target.value;
-        localStorage.setItem("localStoredData", JSON.stringify(formData));
+        // Create object and get any existing data before adding new values
+        let dataObj = localStorage.getItem(storageID);
+        dataObj = dataObj ? JSON.parse(dataObj) : {};
+        dataObj[id] = event.target.value;
+        localStorage.setItem(storageID, JSON.stringify(dataObj));
       }
 
       function repopulateForm() {
-        let savedData = localStorage.getItem("localStoredData");
+        let savedData = localStorage.getItem(storageID);
         if (!savedData) return;
         savedData = JSON.parse(savedData);
+        const fieldsAll = Array.prototype.slice.call(
+          document.querySelectorAll("#save-me input, #save-me textarea")
+        );
         fieldsAll.forEach(function (field) {
           const id = getElemId(field);
           if (!id) return;
@@ -85,7 +87,7 @@
 
       function clearForm(event) {
         if (event.target.id !== "save-me") return;
-        localStorage.removeItem("localStoredData");
+        localStorage.removeItem(storageID);
       }
 
       document.addEventListener("input", storeData);
