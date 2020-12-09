@@ -48,7 +48,6 @@
       const fieldsAll = Array.prototype.slice.call(
         document.querySelectorAll("#save-me input, #save-me textarea")
       );
-      const formData = {};
 
       function getElemId(field) {
         if (field.id) {
@@ -64,6 +63,8 @@
         if (!event.target.closest("#save-me")) return;
         const id = getElemId(event.target);
         if (!id) return;
+        let formData = localStorage.getItem("localStoredData");
+        formData = formData ? JSON.parse(formData) : {};
         formData[id] = event.target.value;
         localStorage.setItem("localStoredData", JSON.stringify(formData));
       }
