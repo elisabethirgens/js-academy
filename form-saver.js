@@ -17,12 +17,13 @@ function inputHandler(event) {
   if (!id) return;
   let relevantValue = event.target.value;
   if (event.target.type === "checkbox") {
-    if (!event.target.hasAttribute("checked")) {
+    if (event.target.checked) {
       event.target.setAttribute("checked", "");
+      relevantValue = "on";
     } else {
       event.target.removeAttribute("checked", "");
+      relevantValue = "off";
     }
-    relevantValue = event.target.checked;
   }
   storeData(id, relevantValue);
 }
@@ -47,23 +48,20 @@ function loadData() {
   fieldsAll.forEach(function (field) {
     const id = getElemId(field);
     if (!id) return;
-    const saved = savedData[id];
     if (field.type === "checkbox") {
-      if (saved === true) {
+      if (savedData[id] === "on") {
         field.setAttribute("checked", "");
       } else {
         field.removeAttribute("checked", "");
       }
-      return; // to avoid setting DOM value to 'on' for checkboxes
-    }
-    if (!saved) return;
-    if (field.type === "radio") {
-      if (field.value === saved) {
+    } else if (field.type === "radio") {
+      if (field.value === savedData[id]) {
         field.setAttribute("checked", "");
       }
-      return; // to avoid changing DOM value to saved value for both radio buttons
+    } else {
+      if (!savedData[id]) return;
+      field.value = savedData[id];
     }
-    field.value = saved; // for input text and select only
   });
 }
 loadData();
