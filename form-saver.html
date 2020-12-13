@@ -10,15 +10,22 @@
         max-width: 30rem;
       }
       label {
-        display: block;
+        display: inline-block;
       }
       input,
-      textarea {
+      textarea,
+      select {
         display: block;
         width: 100%;
         padding: 0.5rem;
         font-size: 1rem;
         margin-bottom: 2rem;
+      }
+      [type="checkbox"],
+      [type="radio"] {
+        display: inline;
+        width: auto;
+        margin-left: 1rem;
       }
       textarea {
         height: 8rem;
@@ -40,8 +47,33 @@
       <input type="text" name="address" id="address" />
       <label for="email">Email</label>
       <input type="email" name="email" id="email" />
-      <label for="more">Comment</label>
+
+      <label for="hear-about-us">How did you hear about us?</label>
+      <select name="hear-about-us" id="hear-about-us">
+        <option value=""></option>
+        <option value="google">Google</option>
+        <option value="referral">Referred by a Friend</option>
+        <option value="tv">A TV Ad</option>
+        <option value="radio">A Radio Ad</option>
+      </select>
+
+      <label for="more">Additional thoughts?</label>
       <textarea name="more" id="more"></textarea>
+
+      <p><strong>Do you agree to our terms of service?</strong></p>
+      <input id="tos-yes" type="radio" name="tos" value="yes" />
+      <label for="tos-yes">Yes</label>
+      <input id="tos-no" type="radio" name="tos" value="no" />
+      <label for="tos-no">No</label>
+
+      <p><strong>Pick your favorite super heroes</strong></p>
+      <input id="spiderman" type="checkbox" name="spiderman" />
+      <label for="spiderman">Spiderman</label>
+      <input id="wonderwoman" type="checkbox" name="wonderwoman" />
+      <label for="wonderwoman">Wonder Woman</label>
+      <input id="blackpanther" type="checkbox" name="blackpanther" />
+      <label for="blackpanther">Black Panther</label>
+
       <button type="submit">Send form</button>
     </form>
     <script src="form-saver.js"></script>
