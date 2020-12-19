@@ -28,15 +28,15 @@ function ahoyPirateAPI() {
     });
 }
 
+function storeData(apiData) {
+  const data = { articles: apiData, timestamp: new Date().getTime() };
+  localStorage.setItem(storageID, JSON.stringify(data));
+}
+
 function isDataStillValid(savedData, expiring) {
   if (!savedData || !savedData.articles || !savedData.timestamp) return;
   const ageOfData = new Date().getTime() - savedData.timestamp;
   return ageOfData < expiring;
-}
-
-function storeData(apiData) {
-  const data = { articles: apiData, timestamp: new Date().getTime() };
-  localStorage.setItem(storageID, JSON.stringify(data));
 }
 
 function loadData() {
