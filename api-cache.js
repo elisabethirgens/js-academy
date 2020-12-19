@@ -1,6 +1,13 @@
 const app = document.querySelector("#app");
 const storageID = "pirate-news";
-const expiration = 1000 * 30;
+const expiration = 1000 * 5;
+
+function getEndpointMaybe() {
+  const endpoint = "https://vanillajsacademy.com/api/";
+  const random = Math.random();
+  if (random < 0.5) return endpoint + "pirates.json";
+  return endpoint + "fail.json";
+}
 
 function ahoyPirateAPI() {
   const savedData = loadData();
@@ -9,7 +16,7 @@ function ahoyPirateAPI() {
     console.log("Loaded from cache");
     return;
   }
-  fetch("https://vanillajsacademy.com/api/pirates.json")
+  fetch(getEndpointMaybe())
     .then(function (response) {
       if (response.ok) {
         return response.json();
@@ -36,6 +43,7 @@ function storeData(apiData) {
 function isDataStillValid(savedData, expiring) {
   if (!savedData || !savedData.articles || !savedData.timestamp) return;
   const ageOfData = new Date().getTime() - savedData.timestamp;
+  console.log("isDataStillValid ?", ageOfData < expiring);
   return ageOfData < expiring;
 }
 
